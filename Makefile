@@ -6,9 +6,9 @@ MOODLE_DOCKER_DB=pgsql
 quick-start:
 	export MOODLE_DOCKER_WWWROOT=./moodle; \
 	export MOODLE_DOCKER_DB=pgsql; \
-	make stop-containers; \
 	git clone -b MOODLE_403_STABLE git://git.moodle.org/moodle.git ./moodle; \
 	cp config.docker-template.php ./moodle/config.php; \
+	git clone -b main git@github.com:EurecatAcademyLab/local_forum_moderation_premium.git ./moodle/local/forummoderation; \
 	bin/moodle-docker-compose up -d; \
 	bin/moodle-docker-wait-for-db; \
 	bin/moodle-docker-compose exec webserver php admin/tool/phpunit/cli/init.php; \
