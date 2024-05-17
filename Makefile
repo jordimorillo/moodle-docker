@@ -1,11 +1,11 @@
 # Variables
 MOODLE_DOCKER_WWWROOT=./moodle
-MOODLE_DOCKER_DB=pgsql
+MOODLE_DOCKER_DB=mysql
 
 # Targets
 install:
 	export MOODLE_DOCKER_WWWROOT=./moodle; \
-	export MOODLE_DOCKER_DB=pgsql; \
+	export MOODLE_DOCKER_DB=mysql; \
 	git clone -b MOODLE_403_STABLE git://git.moodle.org/moodle.git ./moodle; \
 	cp config.docker-template.php ./moodle/config.php; \
 	git clone -b main git@github.com:EurecatAcademyLab/local_forum_moderation_premium.git ./moodle/local/forummoderation; \
@@ -23,28 +23,28 @@ run-multiple-instances:
 
 behat-tests:
 	export MOODLE_DOCKER_WWWROOT=./moodle; \
-	export MOODLE_DOCKER_DB=pgsql; \
+	export MOODLE_DOCKER_DB=mysql; \
 	bin/moodle-docker-compose exec -u www-data webserver php admin/tool/behat/cli/run.php --tags=@auth_manual;
 
 phpunit-tests:
 	export MOODLE_DOCKER_WWWROOT=./moodle; \
-	export MOODLE_DOCKER_DB=pgsql; \
+	export MOODLE_DOCKER_DB=mysql; \
 	bin/moodle-docker-compose exec webserver vendor/bin/phpunit auth/manual/tests/manual_test.php;
 
 manual-testing:
 	export MOODLE_DOCKER_WWWROOT=./moodle; \
-	export MOODLE_DOCKER_DB=pgsql; \
+	export MOODLE_DOCKER_DB=mysql; \
 	bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="Docker moodle" --shortname="docker_moodle" --summary="Docker moodle site" --adminpass="test" --adminemail="admin@example.com";
 
 behat-tests-app:
 	export MOODLE_DOCKER_WWWROOT=./moodle; \
-	export MOODLE_DOCKER_DB=pgsql; \
+	export MOODLE_DOCKER_DB=mysql; \
 	git clone https://github.com/moodlehq/moodle-local_moodleappbehat "./moodle/local/moodleappbehat"; \
 	make behat-tests;
 
 xdebug-enable:
 	export MOODLE_DOCKER_WWWROOT=./moodle; \
-	export MOODLE_DOCKER_DB=pgsql; \
+	export MOODLE_DOCKER_DB=mysql; \
 	bin/moodle-docker-compose exec webserver pecl install xdebug; \
     read -r -d '' conf <<'EOF' \
     xdebug.mode = debug \
@@ -57,21 +57,21 @@ EOF \
 
 xdebug-disable:
 	export MOODLE_DOCKER_WWWROOT=./moodle; \
-	export MOODLE_DOCKER_DB=pgsql; \
+	export MOODLE_DOCKER_DB=mysql; \
 	bin/moodle-docker-compose exec webserver sed -i 's/^zend_extension=/; zend_extension=/' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini; \
 	bin/moodle-docker-compose restart webserver;
 
 stop-containers:
 	export MOODLE_DOCKER_WWWROOT=./moodle; \
-	export MOODLE_DOCKER_DB=pgsql; \
+	export MOODLE_DOCKER_DB=mysql; \
 	bin/moodle-docker-compose stop;
 
 restart-containers:
 	export MOODLE_DOCKER_WWWROOT=./moodle; \
-	export MOODLE_DOCKER_DB=pgsql; \
+	export MOODLE_DOCKER_DB=mysql; \
 	bin/moodle-docker-compose start;
 
 ssh:
 	export MOODLE_DOCKER_WWWROOT=./moodle; \
-	export MOODLE_DOCKER_DB=pgsql; \
+	export MOODLE_DOCKER_DB=mysql; \
 	bin/moodle-docker-compose exec webserver /bin/bash;
