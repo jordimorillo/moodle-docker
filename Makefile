@@ -12,6 +12,7 @@ install:
 	git clone -b main git@github.com:EurecatAcademyLab/local_survey_intelligence_premium.git ./moodle/local/survey_intelligence; \
 	bin/moodle-docker-compose up -d; \
 	bin/moodle-docker-wait-for-db; \
+	bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --adminpass=12345 --adminemail=jmdesarrollo82@gmail.com --fullname="Moodle site" --shortname="moodlesite" --summary="A moodle site for testing" --supportemail="jmdesarrollo82@gmail.com"; \
 	bin/moodle-docker-compose exec webserver php admin/tool/phpunit/cli/init.php; \
 	bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php;
 
