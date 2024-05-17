@@ -2,6 +2,9 @@ services:
   webserver:
     environment:
       MOODLE_DOCKER_BROWSER: chrome
+      MOODLE_DOCKER_SELENIUM_VNC_PORT: 5900
+    ports:
+      - "5900:5900"
   selenium:
     image: "selenium/standalone-chrome${MOODLE_DOCKER_SELENIUM_SUFFIX:-}:${MOODLE_DOCKER_BROWSER_TAG}"
     volumes:

@@ -67,6 +67,7 @@ stop-containers:
 	bin/moodle-docker-compose stop;
 
 restart-containers:
+	export MOODLE_DOCKER_SELENIUM_VNC_PORT=5900
 	export MOODLE_DOCKER_WWWROOT=./moodle; \
 	export MOODLE_DOCKER_DB=mysql; \
 	bin/moodle-docker-compose start;
