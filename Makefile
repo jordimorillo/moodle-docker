@@ -3,12 +3,13 @@ MOODLE_DOCKER_WWWROOT=./moodle
 MOODLE_DOCKER_DB=pgsql
 
 # Targets
-quick-start:
+install:
 	export MOODLE_DOCKER_WWWROOT=./moodle; \
 	export MOODLE_DOCKER_DB=pgsql; \
 	git clone -b MOODLE_403_STABLE git://git.moodle.org/moodle.git ./moodle; \
 	cp config.docker-template.php ./moodle/config.php; \
 	git clone -b main git@github.com:EurecatAcademyLab/local_forum_moderation_premium.git ./moodle/local/forummoderation; \
+	git clone -b main git@github.com:EurecatAcademyLab/local_survey_intelligence_premium.git ./moodle/local/survey_intelligence; \
 	bin/moodle-docker-compose up -d; \
 	bin/moodle-docker-wait-for-db; \
 	bin/moodle-docker-compose exec webserver php admin/tool/phpunit/cli/init.php; \
