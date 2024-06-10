@@ -2,6 +2,10 @@
 MOODLE_DOCKER_WWWROOT=./moodle
 MOODLE_DOCKER_DB=mysql
 
+test:
+	make behat-tests
+	make phpunit-tests
+
 # Targets
 install:
 	export MOODLE_DOCKER_WWWROOT=./moodle; \
@@ -29,11 +33,13 @@ behat-tests:
 phpunit-tests:
 	export MOODLE_DOCKER_WWWROOT=./moodle; \
 	export MOODLE_DOCKER_DB=mysql; \
-	bin/moodle-docker-compose exec webserver vendor/bin/phpunit local;
+	bin/moodle-docker-compose exec webserver vendor/bin/phpunit local --verbose
 
-test:
-	make behat-tests
-	make phpunit-tests
+# Example: make test-specific test="local/survey_intelligence/tests/local_surveyintelligence_getfeedbackitems_test.php"
+test-specific:
+	export MOODLE_DOCKER_WWWROOT=./moodle; \
+	export MOODLE_DOCKER_DB=mysql; \
+	bin/moodle-docker-compose exec webserver vendor/bin/phpunit $(test) --testdox
 
 manual-testing:
 	export MOODLE_DOCKER_WWWROOT=./moodle; \
@@ -74,3 +80,21 @@ ssh:
 	export MOODLE_DOCKER_WWWROOT=./moodle; \
 	export MOODLE_DOCKER_DB=mysql; \
 	bin/moodle-docker-compose exec webserver /bin/bash;
+
+help:
+	@echo "Comandos disponibles:"
+	@echo ""
+	@echo " make help                   Muestra esta ayuda."
+	@echo " make install                Clona y configura Moodle junto con los plugins y la base de datos."
+	@echo " make run-multiple-instances Ejecuta múltiples instancias de Moodle."
+	@echo " make behat-tests            Ejecuta las pruebas Behat."
+	@echo " make phpunit-tests          Ejecuta las pruebas PHPUnit."
+	@echo " make test-specific test=... Ejecuta pruebas específicas de PHPUnit."
+	@echo " make manual-testing         Instala una base de datos de Moodle para pruebas manuales."
+	@echo " make xdebug-enable          Habilita Xdebug."
+	@echo " make xdebug-disable         Deshabilita Xdebug."
+	@echo " make stop-containers        Detiene los contenedores Docker."
+	@echo " make restart-containers     Reinicia los contenedores Docker."
+	@echo " make ssh                    Abre una sesión SSH en el contenedor webserver."
+
+.DEFAULT_GOAL := help
