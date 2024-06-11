@@ -41,6 +41,12 @@ test-specific:
 	export MOODLE_DOCKER_DB=mysql; \
 	bin/moodle-docker-compose exec webserver vendor/bin/phpunit $(test) --testdox
 
+# Example: make test-method test="local/survey_intelligence/tests/local_surveyintelligence_getfeedbackitems_test.php" method="testGetFeedbackItems"
+test-method:
+	export MOODLE_DOCKER_WWWROOT=./moodle; \
+	export MOODLE_DOCKER_DB=mysql; \
+	bin/moodle-docker-compose exec webserver vendor/bin/phpunit --filter $(method) $(test) --testdox
+
 manual-testing:
 	export MOODLE_DOCKER_WWWROOT=./moodle; \
 	export MOODLE_DOCKER_DB=mysql; \
